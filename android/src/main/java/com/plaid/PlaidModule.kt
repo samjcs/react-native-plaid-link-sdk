@@ -103,9 +103,15 @@ class PlaidModule internal constructor(reactContext: ReactApplicationContext) :
       }
 
       val builder = LinkConfiguration.Builder()
-        .publicKey(obj.getString(PUBLIC_KEY))
         .clientName(obj.getString(CLIENT_NAME))
-        .products(productsArray)
+
+      maybeGetStringField(obj, PUBLIC_KEY)?.let {
+        builder.publicKey(it)
+      }
+
+      if (productsArray.length) {
+        builder.products(productsArray)
+      }
 
       if (obj.has(ACCOUNT_SUBTYPES)) {
         extrasMap[ACCOUNT_SUBTYPES] = obj.getJSONObject(ACCOUNT_SUBTYPES).toString()

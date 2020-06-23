@@ -69,34 +69,17 @@ export const PlaidLink = ({
 
 PlaidLink.propTypes = {
   // Required props
-
+  
   // Displayed once a user has successfully linked their account
   clientName: PropTypes.string.isRequired,
-
-  // The Plaid API environment on which to create user accounts.
-  env: PropTypes.oneOf(['development', 'sandbox', 'production']).isRequired,
 
   // A function that is called when a user has successfully onboarded their
   // account. The function should expect two arguments, the public_key and a
   // metadata object.
   onSuccess: PropTypes.func.isRequired,
 
-  // The Plaid product(s) you wish to use, an array containing some of
-  // auth, identity, income, transactions, assets, liabilities, investments.
-  product: PropTypes.arrayOf(
-    PropTypes.oneOf([
-      'auth',
-      'identity',
-      'income',
-      'transactions',
-      'assets',
-      'liabilities',
-      'investments',
-    ]),
-  ).isRequired,
-
   // Optional props
-
+  
   // The public_key associated with your account; available from
   // the Plaid dashboard (https://dashboard.plaid.com).
   // Either publicKey or token is required.
@@ -110,6 +93,23 @@ PlaidLink.propTypes = {
       );
     }
   },
+  
+  // The Plaid API environment on which to create user accounts.
+  env: PropTypes.oneOf(['development', 'sandbox', 'production']),
+
+  // The Plaid product(s) you wish to use, an array containing some of
+  // auth, identity, income, transactions, assets, liabilities, investments.
+  product: PropTypes.arrayOf(
+    PropTypes.oneOf([
+      'auth',
+      'identity',
+      'income',
+      'transactions',
+      'assets',
+      'liabilities',
+      'investments',
+    ]),
+  ),
 
   // You can configure Link to return only the accounts that
   // match a given type and subtype

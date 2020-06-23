@@ -109,48 +109,56 @@ RCT_EXPORT_METHOD(create:(NSDictionary*)configuration) {
     NSString *institution = [RCTConvert NSString:configuration[kRNLinkKitConfigInstitutionKey]];
     BOOL longtailAuth = [RCTConvert BOOL:configuration[kRNLinkKitConfigLongtailAuthKey]];
 
-    PLKEnvironment environment = PLKEnvironmentFromString(env);
-    PLKProduct product = PLKProductFromArray(products);
     // v1 is no longer supported, always use v2 as default.
     PLKAPIVersion apiVersion = kPLKAPIVersionDefault;
-    PLKConfiguration* linkConfiguration = [[PLKConfiguration alloc] initWithKey:key
-                                                                           env:environment
-                                                                       product:product
-                                                                 selectAccount:selectAccount
-                                                                  longtailAuth:longtailAuth
-                                                                    apiVersion:apiVersion];
+    PLKConfiguration* linkConfiguration;
+
+    if ([linkTokenInput hasPrefix:@"link-"]) {
+      linkConfiguration = [[PLKConfiguration alloc] initWithLinkToken: linkTokenInput];
+    } else {
+      PLKEnvironment environment = PLKEnvironmentFromString(env);
+      PLKProduct product = PLKProductFromArray(products);
+      linkConfiguration = [[PLKConfiguration alloc] initWithKey:key
+                                                            env:environment
+                                                        product:product
+                                                  selectAccount:selectAccount
+                                                   longtailAuth:longtailAuth
+                                                     apiVersion:apiVersion];
+
+        if([linkCustomizationName length] > 0) {
+            linkConfiguration.linkCustomizationName = linkCustomizationName;
+        }
+        if ([webhook length] > 0) {
+           linkConfiguration.webhook = [NSURL URLWithString:webhook];
+        }
+        if ([userLegalName length] > 0) {
+           linkConfiguration.userLegalName = userLegalName;
+        }
+        if ([userEmailAddress length] > 0) {
+           linkConfiguration.userEmailAddress = userEmailAddress;
+        }
+        if ([userPhoneNumber length] > 0) {
+            linkConfiguration.userPhoneNumber = userPhoneNumber;
+        }
+        if ([oauthRedirectUri length] > 0) {
+            linkConfiguration.oauthRedirectUri = [NSURL URLWithString:oauthRedirectUri];
+        }
+        if ([oauthNonce length] > 0) {
+            linkConfiguration.oauthNonce = oauthNonce;
+        }
+        if ([accountSubtypes count] > 0) {
+           linkConfiguration.accountSubtypes = accountSubtypes;
+        }
+        if ([countryCodes count] > 0) {
+           linkConfiguration.countryCodes = countryCodes;
+        }
+        if ([language length] > 0) {
+           linkConfiguration.language = language;
+        }
+      }
+
     if ([clientName length] > 0) {
        linkConfiguration.clientName = clientName;
-    }
-    if([linkCustomizationName length] > 0) {
-        linkConfiguration.linkCustomizationName = linkCustomizationName;
-    }
-    if ([webhook length] > 0) {
-       linkConfiguration.webhook = [NSURL URLWithString:webhook];
-    }
-    if ([userLegalName length] > 0) {
-       linkConfiguration.userLegalName = userLegalName;
-    }
-    if ([userEmailAddress length] > 0) {
-       linkConfiguration.userEmailAddress = userEmailAddress;
-    }
-    if ([userPhoneNumber length] > 0) {
-        linkConfiguration.userPhoneNumber = userPhoneNumber;
-    }
-    if ([oauthRedirectUri length] > 0) {
-        linkConfiguration.oauthRedirectUri = [NSURL URLWithString:oauthRedirectUri];
-    }
-    if ([oauthNonce length] > 0) {
-        linkConfiguration.oauthNonce = oauthNonce;
-    }
-    if ([accountSubtypes count] > 0) {
-       linkConfiguration.accountSubtypes = accountSubtypes;
-    }
-    if ([countryCodes count] > 0) {
-       linkConfiguration.countryCodes = countryCodes;
-    }
-    if ([language length] > 0) {
-       linkConfiguration.language = language;
     }
 
     // Cache the presenting view controller so it can be used to dismiss when done.
@@ -191,7 +199,12 @@ RCT_EXPORT_METHOD(create:(NSDictionary*)configuration) {
     };
 
     if ([linkTokenInput length] > 0) {
-        if ([linkTokenInput hasPrefix:@"item-add-"]) {
+        if ([linkTokenInput hasPrefix:@"link-"]) {
+          self.linkViewController = [[PLKPlaidLinkViewController alloc] initWithLinkToken:linkTokenInput
+                                                                            configuration:linkConfiguration
+                                                                                delegate:self.linkViewDelegate];
+        }
+        else if ([linkTokenInput hasPrefix:@"item-add-"]) {
             self.linkViewController = [[PLKPlaidLinkViewController alloc] initWithItemAddToken:linkTokenInput
                                                                                  configuration:linkConfiguration
                                                                                       delegate:self.linkViewDelegate];

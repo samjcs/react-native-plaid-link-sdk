@@ -90,14 +90,14 @@ const MyPlaidComponent = () => {
      // Replace any of the following <#VARIABLE#>s according to your setup,
      // for details see https://plaid.com/docs/quickstart/#client-side-link-configuration
  
-      publicKey='<# Your Public Key #>'
       clientName='<# Your Client Name #>'
-      env='<# Environment #>'  // 'sandbox' or 'development' or 'production'
-      product={['<# Product #>']}
+      publicKey='<# Your Public Key #>'
       onSuccess={data => console.log('success: ', data)}
       onExit={data => console.log('exit: ', data)}
  
       // Optional props
+      env='<# Environment #>'  // 'sandbox' or 'development' or 'production'
+      product={['<# Product #>']}
       countryCodes={['<# Country Code #>']}
       accountSubtypes= {{'<#Type#>': ['<# Subtype #>']}}
       language='<# Language #>'
