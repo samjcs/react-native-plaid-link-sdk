@@ -206,7 +206,10 @@ class PlaidModule internal constructor(reactContext: ReactApplicationContext) :
     val linkHandler = PlaidLinkResultHandler(
       onSuccess = { success ->
         result.putMap(DATA, convertJsonToMap(JSONObject(snakeCaseGson.toJson(success))))
+        print("YOOOO HEY HEY HEY")
         print(result)
+        print("YOOOO HEY HEY HEY")
+
         this.onSuccessCallback?.invoke(result)
       },
       onExit = { exit ->
