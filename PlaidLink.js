@@ -70,9 +70,6 @@ export const PlaidLink = ({
 PlaidLink.propTypes = {
   // Required props
   
-  // Displayed once a user has successfully linked their account
-  clientName: PropTypes.string.isRequired,
-
   // A function that is called when a user has successfully onboarded their
   // account. The function should expect two arguments, the public_key and a
   // metadata object.
@@ -93,6 +90,9 @@ PlaidLink.propTypes = {
       );
     }
   },
+
+  // Displayed once a user has successfully linked their account
+  clientName: PropTypes.string,
   
   // The Plaid API environment on which to create user accounts.
   env: PropTypes.oneOf(['development', 'sandbox', 'production']),
@@ -138,11 +138,8 @@ PlaidLink.propTypes = {
   // A function that is called when a user has specifically exited Link flow.
   onExit: PropTypes.func,
 
-  // Specify an existing user's public token to launch Link in update mode.
-  // This will cause Link to open directly to the authentication step for
-  // that user's institution.
-  // Pass an item_add_token to launch Link in regular mode without a public_key.
-  // Either publicKey or token is required.
+  // Specify a Link token to launch Link. To create a Link token use the /link/token/create
+  // endpoint. If a Link token is used, the public_key is not needed.
   token: PropTypes.string,
 
   // Specify a user to enable all Auth features. Reach out to your
