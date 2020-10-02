@@ -110,6 +110,7 @@ RCT_EXPORT_METHOD(create:(NSDictionary*)configuration) {
 
         if (strongSelf.completionCallback) {
             NSMutableDictionary<NSString*, id> *jsMetadata = [[RNLinksdk dictionaryFromSuccessMetadata:success.metadata] mutableCopy];
+            jsMetadata[@"status"] = @"connected";
             jsMetadata[kRNLinkKitEventTokenKey] = success.publicToken;
             strongSelf.completionCallback(@[[NSNull null], jsMetadata]);
             strongSelf.completionCallback = nil;
