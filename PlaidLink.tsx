@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import {
   Linking,
   NativeEventEmitter,
@@ -106,7 +107,7 @@ export const useDeepLinkRedirector = () => {
   }, []);
 };
 
-export const PlaidLink : React.ReactNode = (props: PlaidLinkComponentProps) => {
+export const PlaidLink : FunctionComponent<PlaidLinkComponentProps> = (props: PlaidLinkComponentProps) => {
   useDeepLinkRedirector();
   return <Pressable onPress={() => openLink(props)}>{props.children}</Pressable>;
 };
