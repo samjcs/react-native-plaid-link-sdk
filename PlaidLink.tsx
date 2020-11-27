@@ -107,10 +107,11 @@ export const useDeepLinkRedirector = () => {
   }, []);
 };
 
-export const PlaidLink : FunctionComponent<PlaidLinkComponentProps> = (props: PlaidLinkComponentProps) =>
-  // useDeepLinkRedirector();
-   <Pressable onPress={() => openLink(props)}>{props.children}</Pressable>
+const PlaidLink : FunctionComponent<PlaidLinkComponentProps> = (props: PlaidLinkComponentProps) =>
+    // useDeepLinkRedirector();
+    <Pressable onPress={() => openLink(props)}>{props.children}</Pressable>
 
+export { PlaidLink };
 
 
 /*
